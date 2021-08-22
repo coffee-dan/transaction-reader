@@ -1,9 +1,9 @@
 import datetime
 import csv
 
+monthly_reports = {}
 with open('transactions.csv', newline='') as csvfile:
 	transactions_reader = csv.DictReader(csvfile)
-	monthly_reports = {}
 	for row in transactions_reader:
 		post_datetime = datetime.datetime.strptime(row['posted_at'], '%Y-%m-%dT%H:%M:%S.%f%z')
 
@@ -15,16 +15,14 @@ with open('transactions.csv', newline='') as csvfile:
 			row
 		)
 
-		# formatted_post_date
-		# print(f'{post_datetime.year} {post_datetime.month} {post_datetime.day}')
+print(f'YYYY <month> -- in      out     ')
+for month, transactions in monthly_reports.items() :
+	month_credit_total = 0.0
+	month_deposit_total = 0.0
+	for tr in transactions :
+		if tr['transaction_type'] == 'Credit' :
+			month_credit_total += float(tr['amount'])
+		else :
+			month_deposit_total += float(tr['amount'])
 
-	for month, transactions in monthly_reports.items() :
-		month_credit_total = 0.0
-		month_deposit_total = 0.0
-		for tr in transactions :
-			if tr['transaction_type'] == 'Credit' :
-				month_credit_total += float(tr['amount'])
-			else :
-				month_deposit_total += float(tr['amount'])
-	
-		print(f'{month:12s} -- {month_credit_total:7.2f} {month_deposit_total:7.2f}')
+	print(f'{month:12s} -- {month_credit_total:7.2f} {month_deposit_total:7.2f}')

@@ -2,3 +2,6 @@
 
 # data
 transactions.csv
+
+# clutter files
+_clutter/
